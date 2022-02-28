@@ -1,0 +1,1 @@
+# MiniGit Sample Application
