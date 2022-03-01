@@ -25,9 +25,27 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            // On Mac Catalyst, after clicking on this button, you can go to ~/Documents/ and checkout if there is the repository BigMac
+            Text("On Mac Catalyst, you should be able to find the cloned repo in `~/Documents/`.").italic()
+
             Button("Clone remote Git repo") {
                 repo.clone(remoteRepoLocation)
+            }
+
+            // Unfortunately doing this won't refresh the commit history after cloning
+            // Need an app restart to see the history
+            // The solution is to make a new view binding to repo.commitGraph which is observable.
+            List(repo.commitGraph.commits) { commit in
+                VStack(alignment: .leading) {
+                    Text(commit.message).bold()
+                    Text(commit.author.name)
+                }
+            }
+            .listStyle(.plain)
+            .onAppear {
+                repo.open()
+                if repo.exists() {
+                    repo.updateCommitGraph()
+                }
             }
         }.padding(5)
     }
