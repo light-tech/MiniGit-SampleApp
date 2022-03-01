@@ -11,6 +11,8 @@
 		B701035827CD0B6900D43034 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B701035727CD0B6900D43034 /* ContentView.swift */; };
 		B701035A27CD0B6B00D43034 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B701035927CD0B6B00D43034 /* Assets.xcassets */; };
 		B701035D27CD0B6B00D43034 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B701035C27CD0B6B00D43034 /* Preview Assets.xcassets */; };
+		B77B414B27CDB41F00583734 /* MiniGit in Frameworks */ = {isa = PBXBuildFile; productRef = B77B414A27CDB41F00583734 /* MiniGit */; };
+		B77B414D27CDB41F00583734 /* XGit in Frameworks */ = {isa = PBXBuildFile; productRef = B77B414C27CDB41F00583734 /* XGit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B77B414D27CDB41F00583734 /* XGit in Frameworks */,
+				B77B414B27CDB41F00583734 /* MiniGit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +91,10 @@
 			dependencies = (
 			);
 			name = MiniGitSample;
+			packageProductDependencies = (
+				B77B414A27CDB41F00583734 /* MiniGit */,
+				B77B414C27CDB41F00583734 /* XGit */,
+			);
 			productName = MiniGitSample;
 			productReference = B701035227CD0B6900D43034 /* MiniGitSample.app */;
 			productType = "com.apple.product-type.application";
@@ -115,6 +123,9 @@
 				Base,
 			);
 			mainGroup = B701034927CD0B6900D43034;
+			packageReferences = (
+				B77B414927CDB41F00583734 /* XCRemoteSwiftPackageReference "MiniGit" */,
+			);
 			productRefGroup = B701035327CD0B6900D43034 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -349,6 +360,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B77B414927CDB41F00583734 /* XCRemoteSwiftPackageReference "MiniGit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/light-tech/MiniGit";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B77B414A27CDB41F00583734 /* MiniGit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B77B414927CDB41F00583734 /* XCRemoteSwiftPackageReference "MiniGit" */;
+			productName = MiniGit;
+		};
+		B77B414C27CDB41F00583734 /* XGit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B77B414927CDB41F00583734 /* XCRemoteSwiftPackageReference "MiniGit" */;
+			productName = XGit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B701034A27CD0B6900D43034 /* Project object */;
 }
