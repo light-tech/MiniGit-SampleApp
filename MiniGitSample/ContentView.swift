@@ -24,7 +24,8 @@ struct ContentView: View {
 
     @State var message = ""
     @ObservedObject var repo = repository
-    @ObservedObject var commitGraph: GitCommitGraph = repository.commitGraph
+    @ObservedObject var commitGraph = repository.commitGraph
+    @ObservedObject var remoteProgress = repository.remoteProgress
 
     var body: some View {
         VStack {
@@ -37,7 +38,11 @@ struct ContentView: View {
                 // We don't want to do another callback so maybe await/async.
             }
 
-            if (repo.hasRepo) {
+            if remoteProgress.inProgress {
+                ProgressView("Cloning from `\(remoteRepoLocation)`")
+            }
+
+            if repo.hasRepo {
                 // At the moment, clone will update hasRepo after completion. So this
                 // has the effect of automatically update the UI if the clone is successful.
                 List(commitGraph.commits) { commit in
