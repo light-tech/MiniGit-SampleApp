@@ -18,10 +18,13 @@ let remoteRepoLocation = "https://github.com/light-tech/BigMac.git"
 // And possibly encrypt them or keychain them by subclassing CredentialsManager
 let credentialManager = CredentialsManager(credentialsFileUrl: documentURL.appendingPathComponent("gitcredentials"))
 
+let repository = GitRepository(localRepoLocation, credentialManager)
+
 struct ContentView: View {
 
     @State var message = ""
-    @StateObject var repo = GitRepository(localRepoLocation, credentialManager)
+    @ObservedObject var repo = repository
+    @ObservedObject var commitGraph: GitCommitGraph = repository.commitGraph
 
     var body: some View {
         VStack {
@@ -29,22 +32,26 @@ struct ContentView: View {
 
             Button("Clone remote Git repo") {
                 repo.clone(remoteRepoLocation)
+                // We want to do repo.updateCommitGraph() but this will be invoked
+                // on main thread so likely before clone finishes in background thread.
+                // We don't want to do another callback so maybe await/async.
             }
 
-            // Unfortunately doing this won't refresh the commit history after cloning
-            // Need an app restart to see the history
-            // The solution is to make a new view binding to repo.commitGraph which is observable.
-            List(repo.commitGraph.commits) { commit in
-                VStack(alignment: .leading) {
-                    Text(commit.message).bold()
-                    Text(commit.author.name)
+            if (repo.hasRepo) {
+                // At the moment, clone will update hasRepo after completion. So this
+                // has the effect of automatically update the UI if the clone is successful.
+                List(commitGraph.commits) { commit in
+                    VStack(alignment: .leading) {
+                        Text(commit.message).bold()
+                        Text(commit.author.name)
+                    }
                 }
-            }
-            .listStyle(.plain)
-            .onAppear {
-                repo.open()
-                if repo.exists() {
-                    repo.updateCommitGraph()
+                .listStyle(.plain)
+                .onAppear {
+                    repo.open()
+                    if repo.exists() {
+                        repo.updateCommitGraph()
+                    }
                 }
             }
         }.padding(5)
